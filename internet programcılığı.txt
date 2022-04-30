@@ -1,0 +1,483 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using WebApplication1.Models;
+using WebApplication1.Models.Viewmodel;
+
+namespace WebApplication1.Controllers
+{
+    public class ServisController : ApiController
+    {
+
+        DB03Entities4 db = new DB03Entities4();
+        Sonuc1Model sonuc = new Sonuc1Model();
+        private object urunId;
+        private object uyeId;
+
+        #region Urun
+
+        [HttpGet]
+        [Route("api/urunliste")]
+        public List<UrunModel> UrunListe()
+        {
+            List<UrunModel> liste = db.Urun.Select(x => new UrunModel()
+            {
+                urunId = x.urunId,
+                urunAd = x.urunAd,
+                urunStok = x.urunStok,
+                urunFiyat = x.urunFiyat,
+                urunKat = x.urunKat
+            }).ToList();
+
+            return liste;
+        }
+
+        [HttpGet]
+        [Route("api/urunbyid/{urunId}")]
+        public UrunModel UyeById(int UrunId)
+        { UrunModel kayit = db.Urun.Where(s => s.urunAd == urunId).Select(x => new UrunModel()
+        {
+            urunId = x.urunAd,
+            urunAd = x.urunAd,
+            urunStok = x.urunStok,
+            urunFiyat = x.urunFiyat,
+            urunKat = x.urunKat
+        }).SingleOrDefault();
+
+            return kayit;
+        }
+        [HttpPost]
+        [Route("api/urunekle")]
+        public Sonuc1Model UyeEkle(UrunModel model)
+        {
+            if (db.Urun.Count(s => s.urunAd == model.urunAd || s.urunAd == model.urunId) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Girilen Kullanıcı Adı veya E-Posta Adresi Kayıtlıdır!";
+                return sonuc;
+            }
+
+            Urun yeni = new Urun();
+            yeni.urunId = model.urunId;
+            yeni.urunAd = model.urunAd;
+            yeni.urunStok = model.urunStok;
+            yeni.urunFiyat = model.urunFiyat;
+            yeni.urunKat = model.urunKat;
+
+            db.Urun.Add(yeni);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Ürün Eklendi";
+            return sonuc;
+        }
+        [HttpPut]
+        [Route("api/urunduzenle")]
+        public Sonuc1Model UyeDuzenle(UrunModel model)
+        {
+            Urun kayit = db.Urun.Where(s => s.urunAd == model.UyeId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Kayıt Bulunamadı";
+                return sonuc;
+            }
+
+            kayit.urunAd = model.urunId;
+            kayit.urunAd = model.urunAd;
+            kayit.urunStok = model.urunStok;
+            kayit.urunFiyat = model.urunFiyat;
+            kayit.urunKat = model.urunKat;
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Ürün Düzenlendi";
+            return sonuc;
+        }
+        [HttpDelete]
+        [Route("api/urunsil/{urunId}")]
+        public Sonuc1Model urunsil(int urunId)
+        {
+            Urun kayit = db.Urun.Where(s => s.urunId == urunId).SingleOrDefault();
+
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Ürün Bulunamadı";
+                return sonuc;
+            }
+            if (db.Urun.Count(s => s.urunId == satisId) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Üzerinde Ürün Kaydı Olan Satış Silinemez!";
+                return sonuc;
+            }
+            if (db.Satis.Count(s => s.satisId == urunId) > 0)
+               
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Üzerinde Satış Kaydı Olan Ürün Silinemez!";
+                return sonuc;
+            }
+            db.Urun.Remove(kayit);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Ürün Silindi";
+            return sonuc;
+        }
+
+        #endregion
+
+        #region Satis
+
+        [HttpGet]
+        [Route("api/satisliste")]
+        public List<SatisModel> SatisListe()
+        {
+            List<SatisModel> liste = db.Satis.Select(x => new SatisModel()
+            {
+                satisId = x.satisId,
+                satisUrunad = x.satisUrunad,
+                satisMiktar = x.satisMiktar,
+                satisFiyat = x.satisFiyat,
+                satisYüzde = x.satisYüzde,
+                satisKat = x.satisKat,
+                satisTarih = x.satisTarih,
+
+            }).ToList();
+            return liste;
+        }
+
+
+
+        [HttpGet]
+        [Route("api/satisurunadsoneklenenler/{s}")]
+        public List<SatisModel> satisurunadsoneklenenler(int s)
+        {
+            List<SatisModel> liste = db.Satis.OrderByDescending(o => o.satisId).Take(
+          s).Select(x => new SatisModel()
+          {
+              satisId = x.satisId,
+              satisUrunad = x.satisUrunad,
+              satisMiktar = x.satisMiktar,
+              satisFiyat = x.satisFiyat,
+              satisYüzde = x.satisYüzde,
+              satisKat = x.satisKat,
+              satisTarih = x.satisTarih,
+          }).ToList();
+            return liste;
+        }
+
+
+        [HttpGet]
+        [Route("api/satisId/{Id}")]
+        public List<SatisModel> satisId(int satisId)
+        {
+            List<SatisModel> liste = db.Satis.Where(s => s.sonucsatisId == satisId).Select
+           (x => new SatisModel()
+           {
+               satisId = x.satisId,
+               satisUrunad = x.satisUrunad,
+               satisMiktar = x.satisMiktar,
+               satisFiyat = x.satisFiyat,
+               satisYüzde = x.satisYüzde,
+               satisKat = x.satisKat,
+               satisTarih = x.satisTarih,
+
+           }).ToList();
+            return liste;
+        }
+
+
+        [HttpGet]
+        [Route("api/satisbyid/{satisId}")]
+        public SatisModel satisById(int satisId)
+        {
+            SatisModel kayit = db.Satis.Where(s => s.sonucsatisId == satisId).Select(x =>new SatisModel()
+           {
+               satisId = x.satisId,
+               satisUrunad = x.satisUrunad,
+               satisMiktar = x.satisMiktar,
+               satisFiyat = x.satisFiyat,
+               satisYüzde = x.satisYüzde,
+               satisKat = x.satisKat,
+               satisTarih = x.satisTarih,
+           }).SingleOrDefault();
+            return kayit;
+
+        }
+
+        [HttpPost]
+        [Route("api/satisUrunadekle")]
+        public Sonuc1Model satisUrunadEkle(SatisModel model)
+        {
+            if (db.Satis.Count(s => s.satisUrunad == model.satisUrunad) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Girilen İsim Kayıtlıdır!";
+                return sonuc;
+            }
+
+            Satis yeni = new Satis();
+            yeni.satisId = model.satisId;
+            yeni.satisUrunad = model.satisUrunad;
+            yeni.satisMiktar = model.satisMiktar;
+            yeni.satisFiyat = model.satisFiyat;
+            yeni.satisYüzde = model.satisYüzde;
+            yeni.satisKat = model.satisKat;
+            yeni.satisTarih = model.satisTarih;
+            db.Satis.Add(yeni);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Ürün Eklendi";
+            return sonuc;
+
+        }
+        [HttpPut]
+        [Route("api/satisduzenle")]
+        public Sonuc1Model SatisUrunadDuzenle(SatisModel model)
+        {
+            Satis kayit = db.Satis.Where(s => s.satisId == model.satisId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Ürün Bulunamadı!";
+                return sonuc;
+            }
+            kayit.satisId = model.satisId;
+            kayit.satisUrunad = model.satisUrunad;
+            kayit.satisMiktar = model.satisMiktar;
+            kayit.satisFiyat = model.satisFiyat;
+            kayit.satisYüzde = model.satisYüzde;
+            kayit.satisKat = model.satisKat;
+            kayit.satisTarih = model.satisTarih;
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Ürün İsmi Düzenlendi";
+            return sonuc;
+
+        }
+
+        [HttpDelete]
+        [Route("api/satissil/{satisId}")]
+        public Sonuc1Model SatisSil(int satisId)
+        {
+            Satis kayit = db.Satis.Where(s => s.sonucsatisId == satisId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Kayıt Bulunamadı!";
+                return sonuc;
+            }
+            if (db.Satis.Count(s => s.satisTarih == satisId) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Üzerinde Satış Tarihi bulunan kayıt silinemez!";
+                return sonuc;
+            }
+            db.Satis.Remove(kayit);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Kayıt Silindi";
+            return sonuc;
+        }
+
+
+
+
+        #endregion
+
+        #region Sonuc
+
+        [HttpGet]
+        [Route("api/sonucliste")]
+        public List<SonucModel> SonucListe()
+        {
+            List<SonucModel> liste = db.Sonuc.Select(x => new SonucModel()
+            {
+                SonucId = x.SonucId,
+                karMiktar = x.karMiktar,
+                karYüzde = x.karYüzde,
+                hedefYüzde = x.hedefYüzde,
+                sonucsatisId = x.sonucsatisId,
+
+            }).ToList();
+            return liste;
+
+        }
+        [HttpGet]
+        [Route("api/sonucbyid/{sonucId}")]
+        public SonucModel SonucById(int SonucId)
+        {
+            string sonucsatisId = null;
+            SonucModel kayit = db.Sonuc.Where(s => s.sonucsatisId == sonucsatisId).Select(x => new SonucModel()
+            {
+                SonucId = x.SonucId,
+                karMiktar = x.karMiktar,
+                karYüzde = x.karYüzde,
+                hedefYüzde = x.hedefYüzde,
+                sonucsatisId = x.sonucsatisId,
+
+            }).SingleOrDefault();
+            return kayit;
+        }
+        [HttpPost]
+        [Route("api/sonucekle")]
+        public Sonuc1Model YorumEkle(SonucModel model)
+        {
+            if (db.Sonuc.Count(s => s.UyeId == model.SonucId && s.satisId == model.karMiktar && s.YorumIcerik == model.sonucsatisId) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Aynı Kişi, Aynı Makaleye Aynı Yorumu Yapamaz!";
+                return sonuc;
+            }
+            Sonuc yeni = new Sonuc();
+            yeni.SonucId = model.SonucId;
+            yeni.karMiktar = model.karMiktar;
+            yeni.karYüzde = model.karYüzde;
+            yeni.hedefYüzde = model.hedefYüzde;
+            yeni.sonucsatisId = model.sonucsatisId;
+            db.Sonuc.Add(yeni);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Sonuç Eklendi";
+            return sonuc;
+
+        }
+
+
+        [HttpPut]
+        [Route("api/sonucduzenle")]
+        public Sonuc1Model SonucDuzenle(SonucModel model)
+        {
+            Sonuc kayit = db.Sonuc.Where(s => s.SonucId == model.SonucId).SingleOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Kayıt Bulunamadı!";
+                return sonuc;
+            }
+            kayit.SonucId = model.SonucId;
+            kayit.karMiktar = model.karMiktar;
+            kayit.karYüzde = model.karYüzde;
+            kayit.hedefYüzde = model.hedefYüzde;
+            kayit.sonucsatisId = model.sonucsatisId;
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Sonuç Düzenlendi";
+            return sonuc;
+
+
+        }
+
+
+
+
+        #endregion
+
+
+        #region Kategori
+
+        [HttpGet]
+        [Route("api/kategoriliste")]
+        public List<KategoriModel> KategoriListe()
+        {
+            List<KategoriModel> liste = db.Kategori.Select(x => new KategoriModel()
+            {
+                kategoriId = x.kategoriId,
+                kategoriAd = x.kategoriAd,
+                urunKatId = x.urunKatId,
+                satisKatId = x.satisKatId,
+
+            }).ToList();
+            return liste;
+
+
+        }
+
+
+        [HttpGet]
+        [Route("api/kategoribyid/{kategoriId}")]
+        public KategoriModel KategoriById(int kategoriId)
+        {
+            KategoriModel kayit = db.Kategori.Where(s => s.KategoriId == kategoriId).Select(x=> new KategoriModel()
+           {
+               kategoriId = x.kategoriId,
+               kategoriAd = x.kategoriAd,
+               urunKatId = x.urunKatId,
+               satisKatId = x.satisKatId,
+
+
+           }).SingleOrDefault();
+            return kayit;
+
+        }
+
+        [HttpPost]
+        [Route("api/kategoriekle")]
+        public Sonuc1Model KategoriEkle(KategoriModel model)
+        {
+            if (db.Kategori.Count(s => s.kategoriAd == model.kategoriAd) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Girilen Kategori Adı Kayıtlıdır!";
+                return sonuc;
+            }
+            Kategori yeni = new Kategori();
+            yeni.kategoriAd = model.kategoriAd;
+            db.Kategori.Add(yeni);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Kategori Eklendi";
+            return sonuc;
+
+        }
+
+        [HttpPut]
+        [Route("api/kategoriduzenle")]
+        public Sonuc1Model KategoriDuzenle(KategoriModel model)
+        {
+            Kategori kayit = db.Kategori.Where(s => s.kategoriId == model.kategoriId).FirstOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Kayıt Bulunamadı!";
+                return sonuc;
+            }
+            kayit.kategoriAd = model.kategoriAd;
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Kategori Düzenlendi";
+            return sonuc;
+
+        }
+
+
+
+        [HttpDelete]
+        [Route("api/kategorisil/{kategoriId}")]
+        public Sonuc1Model KategoriSil(int kategoriId)
+        {
+            Kategori kayit = db.Kategori.Where(s => s.KategoriId == kategoriId).FirstOrDefault();
+            if (kayit == null)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Kayıt Bulunamadı!";
+                return sonuc;
+            }
+            if (db.Kategori.Count(s => s.KategoriId == kategoriId) > 0)
+            {
+                sonuc.islem = false;
+                sonuc.mesaj = "Üzerinde Makale Kayıtlı Kategori Silinemez!";
+                return sonuc;
+            }
+            db.Kategori.Remove(kayit);
+            db.SaveChanges();
+            sonuc.islem = true;
+            sonuc.mesaj = "Kategori Silindi";
+            return sonuc;
+        }
+        #endregion
+    }
+}

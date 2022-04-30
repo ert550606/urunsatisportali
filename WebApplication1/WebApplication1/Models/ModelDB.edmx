@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB03Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="kategoriId" />
+          </Key>
+          <Property Name="kategoriId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kategoriAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="urunKatId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="satisKatId" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Satis">
+          <Key>
+            <PropertyRef Name="satisId" />
+          </Key>
+          <Property Name="satisId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="satisUrunad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="satisMiktar" Type="int" Nullable="false" />
+          <Property Name="satisFiyat" Type="float" Nullable="false" />
+          <Property Name="satisYüzde" Type="float" Nullable="false" />
+          <Property Name="satisKat" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="satisTarih" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sonuc">
+          <Key>
+            <PropertyRef Name="SonucId" />
+          </Key>
+          <Property Name="SonucId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="karMiktar" Type="int" Nullable="false" />
+          <Property Name="karYüzde" Type="float" Nullable="false" />
+          <Property Name="hedefYüzde" Type="float" Nullable="false" />
+          <Property Name="sonucsatisId" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Urun">
+          <Key>
+            <PropertyRef Name="urunId" />
+          </Key>
+          <Property Name="urunId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="urunAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="urunStok" Type="int" Nullable="false" />
+          <Property Name="urunFiyat" Type="float" Nullable="false" />
+          <Property Name="urunKat" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Kategori_ToSatis">
+          <End Role="Satis" Type="Self.Satis" Multiplicity="1" />
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Satis">
+              <PropertyRef Name="satisId" />
+            </Principal>
+            <Dependent Role="Kategori">
+              <PropertyRef Name="satisKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kategori_ToUrun">
+          <End Role="Urun" Type="Self.Urun" Multiplicity="1" />
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urun">
+              <PropertyRef Name="urunId" />
+            </Principal>
+            <Dependent Role="Kategori">
+              <PropertyRef Name="urunKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sonuc_ToSatis">
+          <End Role="Satis" Type="Self.Satis" Multiplicity="1" />
+          <End Role="Sonuc" Type="Self.Sonuc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Satis">
+              <PropertyRef Name="satisId" />
+            </Principal>
+            <Dependent Role="Sonuc">
+              <PropertyRef Name="sonucsatisId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB03ModelStoreContainer">
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Satis" EntityType="Self.Satis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sonuc" EntityType="Self.Sonuc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Urun" EntityType="Self.Urun" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Kategori_ToSatis" Association="Self.FK_Kategori_ToSatis">
+            <End Role="Satis" EntitySet="Satis" />
+            <End Role="Kategori" EntitySet="Kategori" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kategori_ToUrun" Association="Self.FK_Kategori_ToUrun">
+            <End Role="Urun" EntitySet="Urun" />
+            <End Role="Kategori" EntitySet="Kategori" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sonuc_ToSatis" Association="Self.FK_Sonuc_ToSatis">
+            <End Role="Satis" EntitySet="Satis" />
+            <End Role="Sonuc" EntitySet="Sonuc" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB03Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="kategoriId" />
+          </Key>
+          <Property Name="kategoriId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kategoriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="urunKatId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="satisKatId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Satis" Relationship="Self.FK_Kategori_ToSatis" FromRole="Kategori" ToRole="Satis" />
+          <NavigationProperty Name="Urun" Relationship="Self.FK_Kategori_ToUrun" FromRole="Kategori" ToRole="Urun" />
+        </EntityType>
+        <EntityType Name="Satis">
+          <Key>
+            <PropertyRef Name="satisId" />
+          </Key>
+          <Property Name="satisId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="satisUrunad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="satisMiktar" Type="Int32" Nullable="false" />
+          <Property Name="satisFiyat" Type="Double" Nullable="false" />
+          <Property Name="satisYüzde" Type="Double" Nullable="false" />
+          <Property Name="satisKat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="satisTarih" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kategori" Relationship="Self.FK_Kategori_ToSatis" FromRole="Satis" ToRole="Kategori" />
+          <NavigationProperty Name="Sonuc" Relationship="Self.FK_Sonuc_ToSatis" FromRole="Satis" ToRole="Sonuc" />
+        </EntityType>
+        <EntityType Name="Sonuc">
+          <Key>
+            <PropertyRef Name="SonucId" />
+          </Key>
+          <Property Name="SonucId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="karMiktar" Type="Int32" Nullable="false" />
+          <Property Name="karYüzde" Type="Double" Nullable="false" />
+          <Property Name="hedefYüzde" Type="Double" Nullable="false" />
+          <Property Name="sonucsatisId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Satis" Relationship="Self.FK_Sonuc_ToSatis" FromRole="Sonuc" ToRole="Satis" />
+        </EntityType>
+        <EntityType Name="Urun">
+          <Key>
+            <PropertyRef Name="urunId" />
+          </Key>
+          <Property Name="urunId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="urunAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="urunStok" Type="Int32" Nullable="false" />
+          <Property Name="urunFiyat" Type="Double" Nullable="false" />
+          <Property Name="urunKat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Kategori" Relationship="Self.FK_Kategori_ToUrun" FromRole="Urun" ToRole="Kategori" />
+        </EntityType>
+        <Association Name="FK_Kategori_ToSatis">
+          <End Role="Satis" Type="Self.Satis" Multiplicity="1" />
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Satis">
+              <PropertyRef Name="satisId" />
+            </Principal>
+            <Dependent Role="Kategori">
+              <PropertyRef Name="satisKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kategori_ToUrun">
+          <End Role="Urun" Type="Self.Urun" Multiplicity="1" />
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urun">
+              <PropertyRef Name="urunId" />
+            </Principal>
+            <Dependent Role="Kategori">
+              <PropertyRef Name="urunKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sonuc_ToSatis">
+          <End Role="Satis" Type="Self.Satis" Multiplicity="1" />
+          <End Role="Sonuc" Type="Self.Sonuc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Satis">
+              <PropertyRef Name="satisId" />
+            </Principal>
+            <Dependent Role="Sonuc">
+              <PropertyRef Name="sonucsatisId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB03Entities4" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" />
+          <EntitySet Name="Satis" EntityType="Self.Satis" />
+          <EntitySet Name="Sonuc" EntityType="Self.Sonuc" />
+          <EntitySet Name="Urun" EntityType="Self.Urun" />
+          <AssociationSet Name="FK_Kategori_ToSatis" Association="Self.FK_Kategori_ToSatis">
+            <End Role="Satis" EntitySet="Satis" />
+            <End Role="Kategori" EntitySet="Kategori" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kategori_ToUrun" Association="Self.FK_Kategori_ToUrun">
+            <End Role="Urun" EntitySet="Urun" />
+            <End Role="Kategori" EntitySet="Kategori" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sonuc_ToSatis" Association="Self.FK_Sonuc_ToSatis">
+            <End Role="Satis" EntitySet="Satis" />
+            <End Role="Sonuc" EntitySet="Sonuc" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB03ModelStoreContainer" CdmEntityContainer="DB03Entities4">
+          <EntitySetMapping Name="Kategori">
+            <EntityTypeMapping TypeName="DB03Model.Kategori">
+              <MappingFragment StoreEntitySet="Kategori">
+                <ScalarProperty Name="kategoriId" ColumnName="kategoriId" />
+                <ScalarProperty Name="kategoriAd" ColumnName="kategoriAd" />
+                <ScalarProperty Name="urunKatId" ColumnName="urunKatId" />
+                <ScalarProperty Name="satisKatId" ColumnName="satisKatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Satis">
+            <EntityTypeMapping TypeName="DB03Model.Satis">
+              <MappingFragment StoreEntitySet="Satis">
+                <ScalarProperty Name="satisId" ColumnName="satisId" />
+                <ScalarProperty Name="satisUrunad" ColumnName="satisUrunad" />
+                <ScalarProperty Name="satisMiktar" ColumnName="satisMiktar" />
+                <ScalarProperty Name="satisFiyat" ColumnName="satisFiyat" />
+                <ScalarProperty Name="satisYüzde" ColumnName="satisYüzde" />
+                <ScalarProperty Name="satisKat" ColumnName="satisKat" />
+                <ScalarProperty Name="satisTarih" ColumnName="satisTarih" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sonuc">
+            <EntityTypeMapping TypeName="DB03Model.Sonuc">
+              <MappingFragment StoreEntitySet="Sonuc">
+                <ScalarProperty Name="SonucId" ColumnName="SonucId" />
+                <ScalarProperty Name="karMiktar" ColumnName="karMiktar" />
+                <ScalarProperty Name="karYüzde" ColumnName="karYüzde" />
+                <ScalarProperty Name="hedefYüzde" ColumnName="hedefYüzde" />
+                <ScalarProperty Name="sonucsatisId" ColumnName="sonucsatisId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Urun">
+            <EntityTypeMapping TypeName="DB03Model.Urun">
+              <MappingFragment StoreEntitySet="Urun">
+                <ScalarProperty Name="urunId" ColumnName="urunId" />
+                <ScalarProperty Name="urunAd" ColumnName="urunAd" />
+                <ScalarProperty Name="urunStok" ColumnName="urunStok" />
+                <ScalarProperty Name="urunFiyat" ColumnName="urunFiyat" />
+                <ScalarProperty Name="urunKat" ColumnName="urunKat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

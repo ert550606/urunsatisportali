@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB03Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Kategori">
+    <Key>
+      <PropertyRef Name="kategoriId" />
+    </Key>
+    <Property Name="kategoriId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="kategoriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="urunKat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="satisKat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Satis">
+    <Key>
+      <PropertyRef Name="satisId" />
+    </Key>
+    <Property Name="satisId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="satisUrunad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="satisMiktar" Type="Int32" Nullable="false" />
+    <Property Name="satisFiyat" Type="Double" Nullable="false" />
+    <Property Name="satisYüzde" Type="Double" Nullable="false" />
+    <Property Name="satisKat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="satisTarih" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sonuc">
+    <Key>
+      <PropertyRef Name="SonucId" />
+    </Key>
+    <Property Name="SonucId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="karMiktar" Type="Int32" Nullable="false" />
+    <Property Name="karYüzde" Type="Double" Nullable="false" />
+    <Property Name="hedefYüzde" Type="Double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Urun">
+    <Key>
+      <PropertyRef Name="urunId" />
+    </Key>
+    <Property Name="urunId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="C_urunAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="C_urunStok" Type="Int32" Nullable="false" />
+    <Property Name="C_urunFiyat" Type="Double" Nullable="false" />
+    <Property Name="C_ürünKat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="DB03Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Kategori" EntityType="Self.Kategori" />
+    <EntitySet Name="Satis" EntityType="Self.Satis" />
+    <EntitySet Name="Sonuc" EntityType="Self.Sonuc" />
+    <EntitySet Name="Urun" EntityType="Self.Urun" />
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DB03ModelStoreContainer" CdmEntityContainer="DB03Entities">
+    <EntitySetMapping Name="Kategori">
+      <EntityTypeMapping TypeName="DB03Model.Kategori">
+        <MappingFragment StoreEntitySet="Kategori">
+          <ScalarProperty Name="kategoriId" ColumnName="kategoriId" />
+          <ScalarProperty Name="kategoriAd" ColumnName="kategoriAd" />
+          <ScalarProperty Name="urunKat" ColumnName="urunKat" />
+          <ScalarProperty Name="satisKat" ColumnName="satisKat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Satis">
+      <EntityTypeMapping TypeName="DB03Model.Satis">
+        <MappingFragment StoreEntitySet="Satis">
+          <ScalarProperty Name="satisId" ColumnName="satisId" />
+          <ScalarProperty Name="satisUrunad" ColumnName="satisUrunad" />
+          <ScalarProperty Name="satisMiktar" ColumnName="satisMiktar" />
+          <ScalarProperty Name="satisFiyat" ColumnName="satisFiyat" />
+          <ScalarProperty Name="satisYüzde" ColumnName="satisYüzde" />
+          <ScalarProperty Name="satisKat" ColumnName="satisKat" />
+          <ScalarProperty Name="satisTarih" ColumnName="satisTarih" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sonuc">
+      <EntityTypeMapping TypeName="DB03Model.Sonuc">
+        <MappingFragment StoreEntitySet="Sonuc">
+          <ScalarProperty Name="SonucId" ColumnName="SonucId" />
+          <ScalarProperty Name="karMiktar" ColumnName="karMiktar" />
+          <ScalarProperty Name="karYüzde" ColumnName="karYüzde" />
+          <ScalarProperty Name="hedefYüzde" ColumnName="hedefYüzde" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Urun">
+      <EntityTypeMapping TypeName="DB03Model.Urun">
+        <MappingFragment StoreEntitySet="Urun">
+          <ScalarProperty Name="urunId" ColumnName="urunId" />
+          <ScalarProperty Name="C_urunAd" ColumnName=" urunAd" />
+          <ScalarProperty Name="C_urunStok" ColumnName=" urunStok" />
+          <ScalarProperty Name="C_urunFiyat" ColumnName=" urunFiyat" />
+          <ScalarProperty Name="C_ürünKat" ColumnName=" ürünKat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

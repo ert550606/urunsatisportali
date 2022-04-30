@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cb3bcf4b6e5f410db158625df8f628bd" Name="Diagram1">
+        <EntityTypeShape EntityType="DB03Model.Kategori" Width="1.5" PointX="4.625" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB03Model.Satis" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB03Model.Sonuc" Width="1.5" PointX="8.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB03Model.Urun" Width="1.5" PointX="8.125" PointY="5.625" IsExpanded="true" />
+        <AssociationConnector Association="DB03Model.FK_Kategori_ToSatis" ManuallyRouted="false" />
+        <AssociationConnector Association="DB03Model.FK_Kategori_ToUrun" ManuallyRouted="false" />
+        <AssociationConnector Association="DB03Model.FK_Sonuc_ToSatis" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

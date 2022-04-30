@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB03Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Kategori">
+    <Key>
+      <PropertyRef Name="kategoriId" />
+    </Key>
+    <Property Name="kategoriId" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="kategoriAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="urunKat" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="satisKat" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Satis">
+    <Key>
+      <PropertyRef Name="satisId" />
+    </Key>
+    <Property Name="satisId" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="satisUrunad" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="satisMiktar" Type="int" Nullable="false" />
+    <Property Name="satisFiyat" Type="float" Nullable="false" />
+    <Property Name="satisYüzde" Type="float" Nullable="false" />
+    <Property Name="satisKat" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="satisTarih" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sonuc">
+    <Key>
+      <PropertyRef Name="SonucId" />
+    </Key>
+    <Property Name="SonucId" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="karMiktar" Type="int" Nullable="false" />
+    <Property Name="karYüzde" Type="float" Nullable="false" />
+    <Property Name="hedefYüzde" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Urun">
+    <Key>
+      <PropertyRef Name="urunId" />
+    </Key>
+    <Property Name="urunId" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name=" urunAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name=" urunStok" Type="int" Nullable="false" />
+    <Property Name=" urunFiyat" Type="float" Nullable="false" />
+    <Property Name=" ürünKat" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="DB03ModelStoreContainer">
+    <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Satis" EntityType="Self.Satis" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sonuc" EntityType="Self.Sonuc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Urun" EntityType="Self.Urun" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
